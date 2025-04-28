@@ -21,10 +21,10 @@ class Genome:
                 raise IndexError(f"Index {position} out of genome bounds of length {self.length}")
 
         return self.sequence[position]
-    
+
     def __len__(self) -> int:
         return self.length
-    
+
     def __add__(self, other: 'Genome') -> 'Genome':
         return Genome(self.sequence + other.sequence)
 
@@ -35,14 +35,14 @@ class Genome:
     def random_addition_one(self):
         position = random.randint(0, self.length - 1)
         char = random.choice(ALPHABET)
-        
+
         self.sequence = self.sequence[:position] + char + self.sequence[position:]
         self.length += 1
-        
+
     def random_addition(self, size: int):
         position = random.randint(0, self.length - 1)
         char = ''.join(random.choice(ALPHABET) for _ in range(size))
-        
+
         self.sequence = self.sequence[:position] + char + self.sequence[position:]
         self.length += size
 
@@ -50,7 +50,7 @@ class Genome:
         position = random.randint(0, self.length - 1)
         self.sequence = self.sequence[:position] + self.sequence[position + 1:]
         self.length -= 1
-        
+
     def random_deletion(self, size: int):
         position = random.randint(0, self.length - size)
         self.sequence = self.sequence[:position] + self.sequence[position + size:]
@@ -60,22 +60,18 @@ class Genome:
         position = random.randint(0, self.length - 1)
         char = random.choice(ALPHABET)
         self.sequence = self.sequence[:position] + char + self.sequence[position + 1:]
-        
+
     def get_fraction(self, fraction: float, begin: bool = True) -> 'Genome':
         index_to_slice = int(fraction * self.length)
-        
+
         if begin:
             return Genome(self.sequence[:index_to_slice])
         else:
             return Genome(self.sequence[-index_to_slice:])
 
-    def compute_fitness(self) -> int:
-        # Placeholder for fitness computation logic
-        return sum(1 for char in self.sequence if char == '1')
 
     def combine_half_genomes(self, other: 'Genome') -> 'Genome':
-        """ Combine the genomes of both organisms by slicing their genomes in half, then mixing 
-        them. """
+        """ Combine two genomes by slicing them in half, then mixing them. """
 
         first_chosen = 0 if random.random() < 0.5 else 1
 
